@@ -8,17 +8,41 @@ class Album extends Component {
     return album.slug === this.props.match.params.slug
   });
 
-  this.state = {
-    album: album
+   this.state = {
+     album: album,
+     currentSong: album.songs[0],
+     isPlaying: false
     }
-    console.log(this.state.album.songs)
-
+   this.audioElement = document.createElement('audio');
+   this.audioElement.src = album.songs[0].audioSrc;
   }
+
+  play() {
+    this.audioElement.play();
+    this.setState({ isPlaying: true });
+  }
+  pause() {
+    this.audioElement.pause();
+    this.setState({ isPlaying: false });
+  }
+  setSong(song) {
+    this.audioElement.src = song.audioSrc;
+    this.setState({ currentSong: song });
+  }
+  handleSongClick(song) {
+     const isSameSong = this.state.currentSong === song;
+     if (this.state.isPlaying && isSameSong) {
+      this.pause();
+    } else {
+      if (!isSameSong) { this.setSong(song); }
+      this.play();
+    }
+   }
   render() {
     return (
       <section className="album">
         <section id="album-info">
-        <img id="album-cover-art" src={this.state.album.albumCover} />
+        <img id="album-cover-art" src={this.state.album.albumCover} alt="album cover"/>
            <div className="album-details">
               <h1 id="album-title">{this.state.album.title}</h1>
               <h2 className="artist">{this.state.album.artist}</h2>
@@ -33,10 +57,12 @@ class Album extends Component {
               </colgroup>
               <tbody className="song-list-body">
               {
-                this.state.album.songs.map((songs, index) =>
-                    <tr className="each-song"key={index}>
-                      {index + 1} {songs.title} {songs.duration}
-                    </tr>
+                this.state.album.songs.map((song, index) =>
+                <tr className="song" key={index} onClick={() => this.handleSongClick(song)}>
+                  <td>
+                      {index + 1} {song.title} {song.duration}
+                  </td>
+                </tr>
               )
 
               }
