@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import albumData from './../data/albums';
+import PlayerBar from './PlayerBar';
 
 class Album extends Component {
   constructor(props) {
@@ -38,6 +39,13 @@ class Album extends Component {
       this.play();
     }
    }
+   handlePrevClick() {
+     const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+     const newIndex = Math.max(0, currentIndex - 1);
+     const newSong = this.state.album.songs[newIndex];
+     this.setSong(newSong);
+     this.play(newSong);
+   }
   render() {
     return (
       <section className="album">
@@ -58,16 +66,26 @@ class Album extends Component {
               <tbody className="song-list-body">
               {
                 this.state.album.songs.map((song, index) =>
-                <tr className="song" key={index} onClick={() => this.handleSongClick(song)}>
-                  <td>
-                      {index + 1} {song.title} {song.duration}
+                <tr className="song" key={index} onClick={ () => this.handleSongClick(song) } >
+                  <td className="song-actions">
+                    <button>
+                      <span className="song-number">{index+1}</span>
+                      <span className="ion-play"></span>
+                      <span className="ion-pause"></span>
+                    </button>
                   </td>
-                </tr>
-              )
-
-              }
+                  <td className="song-title">{song.title}</td>
+                  <td className="song-duration">{song.duration}</td>
+              </tr>
+              )}
               </tbody>
             </table>
+            <PlayerBar
+               isPlaying={this.state.isPlaying}
+               currentSong={this.state.currentSong}
+               handleSongClick={() => this.handleSongClick(this.state.currentSong)}
+               handlePrevClick={() => this.handlePrevClick()}
+            />
       </section>
     );
   }
