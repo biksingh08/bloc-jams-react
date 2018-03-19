@@ -14,7 +14,8 @@ class Album extends Component {
      currentSong: album.songs[0],
      isPlaying: false,
      currentTime: 0,
-     duration: album.songs[0].duration
+     duration: album.songs[0].duration,
+     currentVolume: 0.1
     }
    this.audioElement = document.createElement('audio');
    this.audioElement.src = album.songs[0].audioSrc;
@@ -30,20 +31,41 @@ class Album extends Component {
    };
    this.audioElement.addEventListener('timeupdate', this.eventListeners.timeupdate);
    this.audioElement.addEventListener('durationchange', this.eventListeners.durationchange);
+
   }
   componentWillUnmount() {
      this.audioElement.src = null;
      this.audioElement.removeEventListener('timeupdate', this.eventListeners.timeupdate);
      this.audioElement.removeEventListener('durationchange', this.eventListeners.durationchange);
    }
+   formatTime(timeInSeconds) {
+     if (typeof(timeInSeconds) === "number") {
+       var totalSeconds = this.state.currentTime;
+       var minutes = Math.floor(totalSeconds/60);
+       var remainingSeconds = Math.floor(((totalSeconds/60) - minutes) * 60);
+       var timeInMinuteAndSeconds = minutes.toString() + ":" + remainingSeconds.toString();
+       this.setState({ currentTime: timeInMinuteAndSeconds });
+       console.log(timeInMinuteAndSeconds);
+        }
+       else {
+         return ("-:--");
+       }
+   }
    handleTimeChange(e) {
     const newTime = this.audioElement.duration * e.target.value;
     this.audioElement.currentTime = newTime;
-    this.setState({ currentTime: newTime });
+    this.setState({ currentTime: (newTime) });
   }
+  handleVolumeChange(e){
+    const volume = e.target.value;
+    this.audioElement.volume = volume;
+    this.setState({currentVolume: volume})
+    console.log(volume);
+  }
+
   play() {
     this.audioElement.play();
-    this.setState({ isPlaying: true });
+    this.setState({ isPlaying: true })
   }
   pause() {
     this.audioElement.pause();
@@ -116,13 +138,14 @@ class Album extends Component {
             <PlayerBar
                isPlaying={this.state.isPlaying}
                currentSong={this.state.currentSong}
-               currentTime={this.audioElement.currentTime}
-               duration={this.audioElement.duration}
+               currentTime={this.state.currentTime}
+               duration={this.state.duration}
+               currentVolume={this.state.currentVolume}
                handleSongClick={() => this.handleSongClick(this.state.currentSong)}
                handlePrevClick={() => this.handlePrevClick()}
                handleNextClick={() => this.handleNextClick()}
                handleTimeChange={(e) => this.handleTimeChange(e)}
-
+               handleVolumeChange={(e) => this.handleVolumeChange(e)}
             />
       </section>
     );
