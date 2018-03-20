@@ -20,13 +20,28 @@ class Album extends Component {
    this.audioElement = document.createElement('audio');
    this.audioElement.src = album.songs[0].audioSrc;
   }
+  formatTime(timeInSeconds, radix) {
+    if (typeof(parseInt(timeInSeconds, radix) === "number")) {
+      var minutes = Math.floor(timeInSeconds/60);
+      var remainingSeconds = Math.floor(((timeInSeconds/60) - minutes) * 60);
+      if (remainingSeconds.toString().length === 1){
+        return minutes.toString() + ":0" + remainingSeconds.toString();
+      } else if (remainingSeconds.toString().length > 1){
+        return minutes.toString() + ":" + remainingSeconds.toString();
+       }
+      else {
+        return ("-:--");
+      }
+    }
+  }
   componentDidMount() {
     this.eventListeners = {
      timeupdate: e => {
-       this.setState({ currentTime: this.audioElement.currentTime });
+       this.setState({ currentTime: this.formatTime(this.audioElement.currentTime)});
      },
      durationchange: e => {
-       this.setState({ duration: this.audioElement.duration });
+       this.setState({ duration: this.formatTime(this.audioElement.duration)});
+
      }
    };
    this.audioElement.addEventListener('timeupdate', this.eventListeners.timeupdate);
@@ -38,19 +53,7 @@ class Album extends Component {
      this.audioElement.removeEventListener('timeupdate', this.eventListeners.timeupdate);
      this.audioElement.removeEventListener('durationchange', this.eventListeners.durationchange);
    }
-   formatTime(timeInSeconds) {
-     if (typeof(timeInSeconds) === "number") {
-       var totalSeconds = this.state.currentTime;
-       var minutes = Math.floor(totalSeconds/60);
-       var remainingSeconds = Math.floor(((totalSeconds/60) - minutes) * 60);
-       var timeInMinuteAndSeconds = minutes.toString() + ":" + remainingSeconds.toString();
-       this.setState({ currentTime: timeInMinuteAndSeconds });
-       console.log(timeInMinuteAndSeconds);
-        }
-       else {
-         return ("-:--");
-       }
-   }
+
    handleTimeChange(e) {
     const newTime = this.audioElement.duration * e.target.value;
     this.audioElement.currentTime = newTime;
@@ -60,7 +63,6 @@ class Album extends Component {
     const volume = e.target.value;
     this.audioElement.volume = volume;
     this.setState({currentVolume: volume})
-    console.log(volume);
   }
 
   play() {
@@ -96,7 +98,6 @@ class Album extends Component {
      const newIndex = Math.max(0, currentIndex + 1);
      if (newIndex < this.state.album.songs.length) {
      const newSong = this.state.album.songs[newIndex];
-     console.log(newSong);
      this.setSong(newSong);
      this.play(newSong);
     }
@@ -130,7 +131,7 @@ class Album extends Component {
                     </button>
                   </td>
                   <td className="song-title">{song.title}</td>
-                  <td className="song-duration">{song.duration}</td>
+                  <td className="song-duration">{this.formatTime(song.duration)}</td>
               </tr>
               )}
               </tbody>
