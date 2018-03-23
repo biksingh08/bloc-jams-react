@@ -1,12 +1,22 @@
 .App {
   text-align: center;
 }
-
+.main-title{
+  background-color: lightblue;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
-
+#landing{
+  text-align: left;
+}
+#library{
+margin-left: 400PX;
+}
+.nav-main{
+  background-color: lightpink;
+}
 .App-header {
   background-color: #222;
   height: 150px;

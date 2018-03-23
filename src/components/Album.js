@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import albumData from './../data/albums';
 import PlayerBar from './PlayerBar';
+import './../Album.css';
 
 class Album extends Component {
   constructor(props) {
@@ -14,8 +15,10 @@ class Album extends Component {
      currentSong: album.songs[0],
      isPlaying: false,
      currentTime: 0,
+     currentSeconds: 0,
+     currentSecondsDuration: album.songs[0].duration,
      duration: album.songs[0].duration,
-     currentVolume: 0.1
+     currentVolume: 0
     }
    this.audioElement = document.createElement('audio');
    this.audioElement.src = album.songs[0].audioSrc;
@@ -37,9 +40,11 @@ class Album extends Component {
   componentDidMount() {
     this.eventListeners = {
      timeupdate: e => {
+       this.setState({ currentSeconds: this.audioElement.currentTime});
        this.setState({ currentTime: this.formatTime(this.audioElement.currentTime)});
      },
      durationchange: e => {
+       this.setState({ currentSecondsDuration: this.audioElement.duration});
        this.setState({ duration: this.formatTime(this.audioElement.duration)});
 
      }
@@ -68,6 +73,7 @@ class Album extends Component {
   play() {
     this.audioElement.play();
     this.setState({ isPlaying: true })
+
   }
   pause() {
     this.audioElement.pause();
@@ -104,51 +110,54 @@ class Album extends Component {
    }
   render() {
     return (
-      <section className="album">
-        <section id="album-info">
-        <img id="album-cover-art" src={this.state.album.albumCover} alt="album cover"/>
-           <div className="album-details">
-              <h1 id="album-title">{this.state.album.title}</h1>
-              <h2 className="artist">{this.state.album.artist}</h2>
-              <div id="release-info">{this.state.album.releaseInfo}</div>
-           </div>
-        </section>
-            <table id="song-list">
-              <colgroup>
-                <col id="song-number-column" />
-                <col id="song-title-column" />
-                <col id="song-duration-column" />
-              </colgroup>
-              <tbody className="song-list-body">
-              {
-                this.state.album.songs.map((song, index) =>
-                <tr className="song" key={index} onClick={ () => this.handleSongClick(song) } >
-                  <td className="song-actions">
-                    <button>
-                      <span className="song-number">{index+1}</span>
-                      <span className="ion-play"></span>
-                      <span className="ion-pause"></span>
-                    </button>
-                  </td>
-                  <td className="song-title">{song.title}</td>
-                  <td className="song-duration">{this.formatTime(song.duration)}</td>
-              </tr>
-              )}
-              </tbody>
-            </table>
-            <PlayerBar
-               isPlaying={this.state.isPlaying}
-               currentSong={this.state.currentSong}
-               currentTime={this.state.currentTime}
-               duration={this.state.duration}
-               currentVolume={this.state.currentVolume}
-               handleSongClick={() => this.handleSongClick(this.state.currentSong)}
-               handlePrevClick={() => this.handlePrevClick()}
-               handleNextClick={() => this.handleNextClick()}
-               handleTimeChange={(e) => this.handleTimeChange(e)}
-               handleVolumeChange={(e) => this.handleVolumeChange(e)}
-            />
-      </section>
+      <div className="container-fluid">
+            <section className="album">
+              <section id="album-info">
+              <img id="album-cover-art" src={this.state.album.albumCover} alt="album cover"/>
+                 <div className="album-details">
+                    <h1 id="album-title">{this.state.album.title}</h1>
+                    <h2 className="artist">{this.state.album.artist}</h2>
+                    <div id="release-info">{this.state.album.releaseInfo}</div>
+                 </div>
+              </section>
+                  <table id="song-list">
+                    <colgroup>
+                      <col id="song-number-column" />
+                      <col id="song-title-column" />
+                      <col id="song-duration-column" />
+                    </colgroup>
+                    <tbody className="song-list-body">
+                    {
+                      this.state.album.songs.map((song, index) =>
+                      <tr className="song" key={index} onClick={ () => this.handleSongClick(song) } >
+                        <td className="song-actions">
+                          <button className="list-buttons">
+                            <div className={this.state.isPlaying ? 'ion-pause' : 'ion-play'}></div>
+                            <span className="song-number">{index+1}</span>
+                          </button>
+                        </td>
+                        <td className="song-title">{song.title}</td>
+                        <td className="song-duration">{this.formatTime(song.duration)}</td>
+                    </tr>
+                    )}
+                    </tbody>
+                  </table>
+                  <PlayerBar
+                     isPlaying={this.state.isPlaying}
+                     currentSong={this.state.currentSong}
+                     currentTime={this.state.currentTime}
+                     duration={this.state.duration}
+                     currentVolume={this.state.currentVolume}
+                     currentSeconds={this.state.currentSeconds}
+                     currentSecondsDuration={this.state.currentSecondsDuration}
+                     handleSongClick={() => this.handleSongClick(this.state.currentSong)}
+                     handlePrevClick={() => this.handlePrevClick()}
+                     handleNextClick={() => this.handleNextClick()}
+                     handleTimeChange={(e) => this.handleTimeChange(e)}
+                     handleVolumeChange={(e) => this.handleVolumeChange(e)}
+                  />
+            </section>
+      </div>
     );
   }
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './../ionicons.css';
 
 class PlayerBar extends Component {
   render() {
@@ -20,26 +21,26 @@ class PlayerBar extends Component {
             <input
             type="range"
             className="seek-bar"
-            value={(this.props.currentTime / this.props.duration) || 0}
+            value={(this.props.currentSeconds / this.props.currentSecondsDuration) || 0}
             max="1"
-            min="0"
-            step="0.01"
+            min="0.001"
+            step="0.001"
             onChange={this.props.handleTimeChange}
             />
             <div className="total-time">{this.props.duration}</div>
         </section>
         <section id="volume-control">
               <div className="icon ion-volume-low"></div>
+              <div className="icon ion-volume-high"></div>
               <input
               type="range"
               className="seek-bar"
               value={this.props.currentVolume}
               max="1"
               min="0"
-              step=".1"
+              step=".01"
               onChange={this.props.handleVolumeChange}
               />
-              <div className="icon ion-volume-high"></div>
         </section>
      </section>
     );
