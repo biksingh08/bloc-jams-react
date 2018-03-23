@@ -1,0 +1,97 @@
+.song-title {
+  height: 80px;
+}
+.album{
+  height: 100vh;
+}
+.album::before{
+background: url('/assets/images/main-background.png');
+opacity: 0.3;
+}
+#album-info{
+  margin-right: 400px;
+  margin-top: 50px;
+  margin-left: 50px;
+}
+.container-fluid{
+  margin: 0px;
+  padding: 0px;
+  background-color: lightyellow;
+}
+
+#song-list{
+  height: 100px;
+  width: 300px;
+  opacity: 0.8;
+  background-color: lightblue;
+  margin-top: 50px;
+  margin-left: 50px;
+  border-radius: 25px;
+}
+
+#album-info{
+  padding-left: 0px;
+  padding-right: 0px;
+  width: 400px;
+  float: right;
+
+}
+#album-cover-art{
+  height: 200px;
+  width: 200px;
+
+}
+#buttons{
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.list-buttons .ion-play{
+  display: none;
+}
+
+.list-buttons .ion-pause{
+  display: none;
+}
+
+.list-buttons:hover .ion-play{
+  display: block;
+}
+
+.list-buttons:focus .ion-pause{
+  display: block;
+}
+.list-buttons:hover .song-number{
+  display: none;
+}
+.list-buttons .ion-play{
+  float: left;
+}
+.list-buttons .song-number{
+  float: right;
+}
+.list-buttons:focus .ion-play{
+  display: block;
+}
+.list-buttons:active .song-number{
+  display: none;
+}
+
+
+#volume-control{
+  margin-left: 550px;
+  margin-right: 550px;
+}
+#time-control{
+  margin-left: 200px;
+  margin-right: 200px;
+}
+.icon.ion-volume-low{
+  display: inline-block;
+  float: left;
+}
+
+.icon.ion-volume-high{
+  display: inline-block;
+  float: right;
+}
