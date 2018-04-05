@@ -108,6 +108,23 @@ class Album extends Component {
      this.play(newSong);
     }
    }
+
+   handleButtonFunctions(song) {
+       if(this.state.isPlaying && this.state.currentSong === song){
+         return "playing";
+       }
+       if(!this.state.isPlaying && this.state.currentSong === song){
+         return "paused-this";
+       }
+       if (this.state.currentSong === song && !this.state.isPlaying){
+       return "not-playing-this";
+      }
+      else {
+       return "not-playing";
+     }
+   }
+
+
   render() {
     return (
       <div className="container-fluid">
@@ -131,10 +148,13 @@ class Album extends Component {
                       this.state.album.songs.map((song, index) =>
                       <tr className="song" key={index} onClick={ () => this.handleSongClick(song) } >
                         <td className="song-actions">
+                        <div className={this.handleButtonFunctions(song)}>
                           <button className="list-buttons">
-                            <div className={this.state.isPlaying ? 'ion-pause' : 'ion-play'}></div>
-                            <span className="song-number">{index+1}</span>
+                              <span className="ion-play"></span>
+                              <span className="ion-pause"></span>
+                              <span className="song-number">{index + 1}</span>
                           </button>
+                        </div>
                         </td>
                         <td className="song-title">{song.title}</td>
                         <td className="song-duration">{this.formatTime(song.duration)}</td>

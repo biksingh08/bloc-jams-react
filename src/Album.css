@@ -46,37 +46,13 @@ opacity: 0.3;
   margin-left: 50px;
   margin-right: 50px;
 }
-.list-buttons .ion-play{
-  display: none;
-}
 
-.list-buttons .ion-pause{
-  display: none;
-}
-
-.list-buttons:hover .ion-play{
+.list-buttons .show-on-play .ion-play : hover{
   display: block;
 }
-
-.list-buttons:focus .ion-pause{
-  display: block;
-}
-.list-buttons:hover .song-number{
+.list-buttons .ion-play.show-on-hover{
   display: none;
 }
-.list-buttons .ion-play{
-  float: left;
-}
-.list-buttons .song-number{
-  float: right;
-}
-.list-buttons:focus .ion-play{
-  display: block;
-}
-.list-buttons:active .song-number{
-  display: none;
-}
-
 
 #volume-control{
   margin-left: 550px;
@@ -91,6 +67,56 @@ opacity: 0.3;
   float: left;
 }
 
+.playing .ion-play {
+  display: none;
+}
+
+.playing .ion-pause {
+  display: block;
+}
+
+.playing .song-number {
+  display: none;
+}
+
+.not-playing .ion-play {
+  display: none;
+}
+
+
+.not-playing:hover .ion-play{
+  display: block;
+}
+
+.not-playing:hover .song-number {
+  display: none;
+}
+
+.not-playing .ion-pause {
+  display: none;
+}
+
+.not-playing-this .ion-pause {
+  display: none;
+}
+
+.not-playing-this .ion-play {
+  display: none;
+}
+
+.not-playing-this .song-number {
+  display: block;
+}
+
+.paused-this .ion-play {
+  display: block;
+}
+.paused-this .ion-pause {
+  display: none;
+}
+.paused-this .song-number {
+  display: none;
+}
 .icon.ion-volume-high{
   display: inline-block;
   float: right;
